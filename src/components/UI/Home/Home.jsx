@@ -18,15 +18,22 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const result = await HomePageLoaderData();
-      setData(result);
-      setLoading(false);
+      try {
+        setLoading(true);
+
+        const result = await HomePageLoaderData();
+
+        setData(result);
+      } catch {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
 
-  if (loading) return <AnimeLoading />;
+  if (loading || !data) return <AnimeLoading />;
 
   const { trending, upcoming, seasonal, actionPicks, TopAnime, MostPopular } =
     data;

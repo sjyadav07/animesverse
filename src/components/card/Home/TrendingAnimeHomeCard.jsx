@@ -29,6 +29,7 @@ const TrendingAnimeHomeCard = ({ currEle }) => {
   }
 
   return (
+      <NavLink to={`/anime/${mal_id}`}>
     <li className={` w-full select-none cursor-pointer hover:detailed-info`}>
       {/* Poster */}
       <div className="w-full aspect-2/3 bg-[#111] overflow-hidden ">
@@ -74,9 +75,9 @@ const TrendingAnimeHomeCard = ({ currEle }) => {
         </div>
         <div className=" flex items-center gap-6 text-[#f47521] absolute bottom-4 left-4 ">
           <button className="cursor-pointer">
-            <NavLink to={`/anime/${mal_id}`}>
+          
               <GrPlay size={22} />
-            </NavLink>
+           
           </button>
           <button className="cursor-pointer">
             <span>
@@ -91,6 +92,7 @@ const TrendingAnimeHomeCard = ({ currEle }) => {
         </div>
       </div>
     </li>
+     </NavLink>
   );
 };
 

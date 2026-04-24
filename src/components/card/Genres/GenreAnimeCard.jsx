@@ -2,11 +2,8 @@
 import { useState } from "react";
 import { GrAdd, GrBookmark, GrPlay, GrStar } from "react-icons/gr";
 import { NavLink } from "react-router-dom";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
-const GenreAnimeCard = ({ anime, viewMode = "grid", columns = 5 }) => {
-  const [hoveredIcon, setHoveredIcon] = useState(null);
 
+const GenreAnimeCard = ({ anime, viewMode = "grid", columns = 5 }) => {
   // Destructure safely
   const {
     mal_id,
@@ -48,13 +45,6 @@ const GenreAnimeCard = ({ anime, viewMode = "grid", columns = 5 }) => {
       return (members / 1e3).toFixed(1).replace(/\.0$/, "") + "k";
     return String(members);
   }
-
-  // Tooltip texts for icons
-  const tooltips = {
-    play: "Play E1",
-    bookmark: "Add to Watchlist",
-    add: "Add to Yourlist",
-  };
 
   // List View Layout
   if (viewMode === "list") {
@@ -179,123 +169,104 @@ const GenreAnimeCard = ({ anime, viewMode = "grid", columns = 5 }) => {
   const synopsisClamp = getLineClamp();
 
   return (
-    <li className="relative w-full select-none cursor-pointer group list-none">
-      {/* Card Container */}
-      <div className="relative ">
-        {/* Poster */}
-        <div className="w-full h-full aspect-2/3 bg-[#111] ">
-          <img
-            src={images?.webp?.large_image_url || images?.jpg?.large_image_url}
-            alt={title_english || title}
-            className="w-full h-full object-cover "
-            loading="lazy"
-          />
-        </div>
+    <NavLink to={`/anime/${mal_id}`}>
+      <li className="relative w-full select-none cursor-pointer group list-none">
+        {/* Card Container */}
+        <div className="relative ">
+          {/* Poster */}
+          <div className="w-full h-full aspect-2/3 bg-[#111] ">
+            <img
+              src={
+                images?.webp?.large_image_url || images?.jpg?.large_image_url
+              }
+              alt={title_english || title}
+              className="w-full h-full object-cover "
+              loading="lazy"
+            />
+          </div>
 
-        {/* Info always visible */}
-        <div className="p-2 sm:p-2">
-          <h3
-            className={`font-semibold text-white leading-tight line-clamp-2 mb-1 ${textSizeClass}`}
-          >
-            {title_english || title}
-          </h3>
-
-          <p
-            className={`text-gray-400 line-clamp-1 tracking-tight ${textSizeClass}`}
-          >
-            {genres
-              .slice(0, 3)
-              .map((g) => g.name)
-              .join(" | ")}
-            {genres.length > 3 && " | +more"}
-          </p>
-        </div>
-
-        {/* Hover Detailed Info */}
-        <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#19191b]  p-3 sm:p-4 opacity-0 invisible group-hover:opacity-94 group-hover:visible transition-all duration-300 z-10 overflow-hidden flex flex-col">
-          {/* Title */}
-          <div className="mb-2">
+          {/* Info always visible */}
+          <div className="p-2 sm:p-2">
             <h3
-              className={`font-bold text-white line-clamp-2 ${textSizeClass}`}
+              className={`font-semibold text-white leading-tight line-clamp-2 mb-1 ${textSizeClass}`}
             >
               {title_english || title}
             </h3>
-          </div>
 
-          {/* Stats */}
-          <div className={`text-[#8c8c8c] font-semibold mb-2 ${textSizeClass}`}>
-            {score && (
-              <p className="text-[#bbbbbb] flex gap-1 items-center">
-                <span>{score.toFixed(1)}</span>
-                <GrStar size={columns === 6 ? 14 : 16} />
-                <span>{`(${showViews(members)})`}</span>
-              </p>
-            )}
-
-            {episodes && <p className="py-1">{episodes} Episodes</p>}
-
-            {/* Status Badge */}
-            <p className="py-2 inline-block">
-              <span
-                className={`px-2 py-1 rounded-full ${statusStyles[normalizeStatus(status)]} ${textSizeClass}`}
-              >
-                {status || "Unknown"}
-              </span>
-            </p>
-          </div>
-
-          {/* Synopsis - Adjust based on columns */}
-          <div className="flex-1 overflow-hidden">
             <p
-              className={`text-white leading-relaxed tracking-normal ${synopsisClamp} ${textSizeClass}`}
+              className={`text-gray-400 line-clamp-1 tracking-tight ${textSizeClass}`}
             >
-              {synopsis || "No description available."}
+              {genres
+                .slice(0, 3)
+                .map((g) => g.name)
+                .join(" | ")}
+              {genres.length > 3 && " | +more"}
             </p>
           </div>
 
-          {/* Action Buttons with Tooltips */}
-          <div className="flex items-center gap-4 sm:gap-6 text-[#f47521] mt-3 pt-3">
-            {/* Play Button with Tooltip */}
-            <Tippy
-              content={tooltips.play}
-              arrow={true}
-              animation="scale"
-              delay={[50, 50]}
-            >
-              <NavLink to={`/anime/${mal_id}`}>
-                <button className="cursor-pointer hover:scale-110 transition-transform">
-                  <GrPlay size={columns === 6 ? 18 : 22} />
-                </button>
-              </NavLink>
-            </Tippy>
+          {/* Hover Detailed Info */}
+          {/* <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#19191b]  p-3 sm:p-4 opacity-0 invisible hover:opacity-94 group-hover:visible transition-all duration-300 z-10 overflow-hidden flex flex-col"> */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#19191b] p-3 sm:p-4 opacity-0 invisible group-hover:opacity-94 group-hover:visible transition-all duration-300 z-10 overflow-hidden flex flex-col">
+            {/* Title */}
+            <div className="mb-2">
+              <h3
+                className={`font-bold text-white line-clamp-2 ${textSizeClass}`}
+              >
+                {title_english || title}
+              </h3>
+            </div>
 
-            {/* Bookmark Button with Tooltip */}
-            <Tippy
-              content={tooltips.bookmark}
-              arrow={true}
-              animation="scale"
-              delay={[50, 50]}
+            {/* Stats */}
+            <div
+              className={`text-[#8c8c8c] font-semibold mb-2 ${textSizeClass}`}
             >
+              {score && (
+                <p className="text-[#bbbbbb] flex gap-1 items-center">
+                  <span>{score.toFixed(1)}</span>
+                  <GrStar size={columns === 6 ? 14 : 16} />
+                  <span>{`(${showViews(members)})`}</span>
+                </p>
+              )}
+
+              {episodes && <p className="py-1">{episodes} Episodes</p>}
+
+              {/* Status Badge */}
+              <p className="py-2 inline-block">
+                <span
+                  className={`px-2 py-1 rounded-full ${statusStyles[normalizeStatus(status)]} ${textSizeClass}`}
+                >
+                  {status || "Unknown"}
+                </span>
+              </p>
+            </div>
+
+            {/* Synopsis - Adjust based on columns */}
+            <div className="flex-1 overflow-hidden">
+              <p
+                className={`text-white leading-relaxed tracking-normal ${synopsisClamp} ${textSizeClass}`}
+              >
+                {synopsis || "No description available."}
+              </p>
+            </div>
+
+            {/* Action Buttons  */}
+            <div className="flex items-center gap-4 sm:gap-6 text-[#f47521] mt-3 pt-3">
+              <button className="cursor-pointer hover:scale-110 transition-transform">
+                <GrPlay size={columns === 6 ? 18 : 22} />
+              </button>
+
               <button className="cursor-pointer hover:scale-110 transition-transform">
                 <GrBookmark size={columns === 6 ? 18 : 22} />
               </button>
-            </Tippy>
 
-            {/* Add Button with Tooltip */}
-            <Tippy
-              content={tooltips.add}
-              arrow={true}
-              animation="scale"
-              delay={[50, 50]}
-            >
               <button className="cursor-pointer hover:scale-110 transition-transform">
                 <GrAdd size={columns === 6 ? 18 : 22} />
               </button>
-            </Tippy>
+            </div>
           </div>
         </div>
-      </div>
-    </li>
+      </li>
+    </NavLink>
   );
 };
 

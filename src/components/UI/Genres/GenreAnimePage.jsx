@@ -245,7 +245,13 @@ const GenreAnimePage = () => {
                 <div
                   className={`${
                     gridView === "grid"
-                      ? `grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-${itemsPerRow} gap-4 md:gap-6`
+                      ? `grid gap-4 md:gap-6 ${
+                          itemsPerRow === 4
+                            ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4"
+                            : itemsPerRow === 5
+                              ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+                              : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+                        }`
                       : "flex flex-col gap-4"
                   } cursor-pointer`}
                 >
