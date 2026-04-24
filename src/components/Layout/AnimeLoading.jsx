@@ -18,12 +18,12 @@ const AnimeLoading = ({ dataReady, minDuration = 2000 }) => {
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-[99999]">
       <video
-        src="/videos/sharingan-eye-anime-loader.mp4"
+        src="/videos/sharingan-gif-loader.mp4"
         autoPlay
         muted
         loop
         playsInline
-        className="w-full h-full object-contain"
+        className="w-full h-full object-cover"
         onLoadedData={() => setVideoReady(true)}
       />
     </div>
